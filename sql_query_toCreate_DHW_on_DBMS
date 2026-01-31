@@ -1,0 +1,188 @@
+create Database ETL_DWH
+
+use ETL_DWH
+
+------------------------------------------
+
+
+select * from sales_RawData_unclean
+
+------------------------------------------
+
+
+alter table Sales_cleaned change `Years of Experience` Exp_years int
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------- creating tables , depending on Star Schema ------------------------
+
+
+
+create table dim_Emp( 
+
+        st_id int PRIMARY key auto_increment ,
+        Status varchar(15), Education varchar(20),
+        Industry varchar(20), Location varchar(20),
+        AI_Risk varchar(10), Age_Group varchar(10),
+        Exp_years int 
+        );
+
+
+
+
+
+
+
+
+create table dim_date( 
+
+       date_id int auto_increment primary key,
+       Date_Recorded date 
+       )
+
+
+
+
+
+
+
+create table fact_Emp( 
+
+                emp_id int primary key auto_increment,
+                Monthly_salary int,
+                st_id int ,
+                date_id int ,
+                Foreign key (st_id) references dim_Emp(st_id),
+                foreign key (date_id) references dim_date(date_id) 
+                )
+
+
+
+                
+                
+                
+                
+                
+                
+
+
+------------------------------- insert values ---------------------------------------
+
+
+
+
+
+insert into dim_Emp(Status, Education, Industry, Location, AI_Risk, Age_Group, Exp_years)
+select distinct Status, Education, Industry, Location, AI Risk, Age Group, Exp_years 
+from Sales_cleaned
+
+
+
+
+
+
+
+
+
+
+insert into dim_date(Date_Recorded)
+select distinct Date Recorded
+from Sales_cleaned
+
+
+
+
+
+
+
+
+insert into fact_Emp(Monthly_salary, st_id, date_id)
+
+
+SELECT  `Monthly Salary (INR)`, de.st_id, dd.date_id from Sales_cleaned sc
+
+
+join dim_Emp de on  de.Status = sc.status
+
+                and de.Education = sc.Education
+
+                and de.Industry = sc.industry
+
+                and de.Location = sc.Location
+
+                and de.AI_Risk = sc.`AI Risk`
+
+                and de.Age_Group = sc.`Age Group`
+
+                and de.Exp_years = sc.Exp_years
+                
+join dim_date dd on dd.Date_Recorded=sc.`Date Recorded`                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------- Query----------------------------
+
+
+
+
+
+------------------------------------------------------- Query ------------------------------------------
+
+
+
+
+select de.Age_Group, sum(fe.Monthly_salary) 
+from dim_Emp de join fact_Emp fe
+
+on de.st_id = fe.st_id
+
+group by de.Age_Group
+having sum(fe.Monthly_salary) > 20000000
+
+
+-----------------------------------------------------------
+
+select * from dim_date
+
+
+
+select * 
+from dim_Emp
+
+
+select de.Education, fe.Monthly_salary,dd.Date_Recorded
+from fact_Emp fe join dim_Emp de on fe.st_id=de.st_id
+join dim_date dd  on dd.date_id = fe.date_id 
+
+
+
+
+
+
