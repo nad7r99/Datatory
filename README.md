@@ -75,32 +75,32 @@
 🧱 Data Warehouse Design(OLAP)
 ⭐ Star Schema
 
-  The Data Warehouse is modeled using a Star Schema(1 fact table and 2 dimention table).
+    The Data Warehouse is modeled using a Star Schema(1 fact table and 2 dimention table).
 
-Fact Table
-   fact_Emp
-   Monthly_salary (Fact)
-   st_id (FK)
-   date_id (FK)
+    Fact Table
+      fact_Emp
+      Monthly_salary (Fact)
+      st_id (FK)
+      date_id (FK)
 
-Dimension Tables
+    Dimension Tables
 
-  dim_Emp
-  Status
-  Education
-  Industry
-  Location
-  AI_Risk
-  Age_Group
-  Exp_years
+       dim_Emp
+       Status
+       Education
+       Industry
+       Location
+       AI_Risk
+       Age_Group
+       Exp_years
 
 
-dim_date
-  Date_Recorded
+    dim_date
+      Date_Recorded
 
-✔️ Surrogate Keys are used
-✔️ Fact contains only metrics + FKs
-✔️ Dimensions store descriptive attributes
+    ✔️ Surrogate Keys are used
+    ✔️ Fact contains only metrics + FKs
+    ✔️ Dimensions store descriptive attributes
 
 
 
